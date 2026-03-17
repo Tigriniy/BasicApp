@@ -1,0 +1,8 @@
+{
+    "name": "tigriniy/basicapp",
+    "description": "development of the basic application architecture",
+    "type": "project",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "require": {}
+}
