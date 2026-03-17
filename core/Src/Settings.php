@@ -8,6 +8,11 @@ class Settings
 {
     private array $_settings;
 
+    public function getDbSetting(): array
+    {
+        return $this->db ?? [];
+    }
+
     public function __construct(array $settings = [])
     {
         $this->_settings = $settings;
