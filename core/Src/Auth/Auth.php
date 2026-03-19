@@ -2,7 +2,7 @@
 
 namespace Src\Auth;
 
-use Src\Auth;
+use Src\Session;
 
 class Auth
 {

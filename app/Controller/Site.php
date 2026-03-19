@@ -30,7 +30,7 @@ class Site
     }
     public function login(Request $request): string
     {
-        //Если просто образение к странице, то отобразить форму
+        //Если просто обращение к странице, то отобразить форму
         if ($request->method === 'GET') {
             return new View('site.login');
         }

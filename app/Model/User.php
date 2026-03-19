@@ -25,7 +25,13 @@ class User extends Model implements IdentityInterface
         });
     }
 
-    //Выборка пользователь по первичному ключу
+    //Выборка пользователя по первичному ключу
+    public function findIdentity(int $id)
+    {
+        return self::where('id', $id)->first();
+    }
+
+    //Возврат первичного ключа
     public function getId(): int
     {
         return $this->id;
@@ -34,6 +40,7 @@ class User extends Model implements IdentityInterface
     //Возврат аутентифицированного пользователя
     public function attemptIdentity(array $credentials)
     {
-        return self::where(['login' => $credentials['login'], 'password' => md5($credentials['password'])])->first();
+        return self::where(['login' => $credentials['login'],
+            'password' => md5($credentials['password'])])->first();
     }
 }
