@@ -1,8 +1,31 @@
-<h2>Регистрация нового пользователя</h2>
-<h3><?= $message ?? ''; ?></h3>
+<h2>Регистрация нового сотрудника отдела кадров</h2>
+
+<?php if (isset($error)): ?>
+    <p style="color: red;"><?=$error?></p>
+<?php endif; ?>
+
+<?php if (isset($success)): ?>
+    <p style="color: green;"><?= $success ?></p>
+<?php endif; ?>
+
+
+
 <form method="post">
-    <label>Имя <input type="text" name="name"></label>
-    <label>Логин <input type="text" name="login"></label>
-    <label>Пароль <input type="password" name="password"></label>
-    <button>Зарегистрироваться</button>
+    <div>
+        <label>Логин:</label>
+        <input type="text" name="login" required>
+    </div>
+    <div>
+        <label>Пароль:</label>
+        <input type="text" name="password" required>
+    </div>
+
+    <div>
+        <label>Роль:</label>
+        <select name="role">
+            <option value="hr_employee">Сотрудник отдела кадров</option>
+        </select>
+    </div>
+
+    <button type="submit">Зарегистрировать</button>
 </form>
