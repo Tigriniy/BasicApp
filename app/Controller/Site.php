@@ -24,6 +24,11 @@ class Site
     public function signup(Request $request): string
     {
         if ($request->method == 'POST') {
+            if (!Auth::check() || Auth::user()->role !== 'admin') {
+                return new View('site.signup', ['error' => 'Только администратор может добавлять новых пользователей']);
+            }
+
+
             $data = $request->all();
 
             //убираю лишние поля, если name будет приходить из формы, в моей бд нет такой колонки
