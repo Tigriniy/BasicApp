@@ -23,8 +23,16 @@ class Site
 
     public function signup(Request $request): string
     {
-        if ($request->method === 'POST' && User::create($request->all())) {
-            app()->route->redirect('/go');
+        if ($request->method == 'POST') {
+            $data = $request->all();
+
+            //убираю лишние поля, если name будет приходить из формы, в моей бд нет такой колонки
+            unset($data['name']);
+
+            if (User::create($data)) {
+                app()->route->redirect('/hello');
+
+            }
         }
         return new View('site.signup');
     }
