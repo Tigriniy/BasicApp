@@ -29,22 +29,26 @@ class Site
 
     public function signup(Request $request): string
     {
-        if ($request->method === 'POST') {
-            if (!Auth::check() || Auth::user()->role !== 'admin') {
-                return new View('site.signup', ['error' => 'Только администратор может добавлять новых пользователей']);
-            }
-
-            $data = $request->all();
-            unset($data['name']);
-            $data['role'] = 'hr_employee';
-
-            if (User::create($data)) {
-                return new View('site.signup', ['success' => 'Новый сотрудник отдела кадров успешно добавлен']);
-            }
+        if ($request->method === 'GET') {
+            return new View('site.signup');
         }
 
-        return new View('site.signup');
+        // POST — регистрация
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return new View('site.signup', ['error' => 'Только администратор может добавлять новых пользователей']);
+        }
+
+        $data = $request->all();
+        unset($data['name']);
+        $data['role'] = 'hr_employee';
+
+        if (User::create($data)) {
+            return new View('site.signup', ['success' => 'Новый сотрудник отдела кадров успешно добавлен']);
+        }
+
+        return new View('site.signup', ['error' => 'Ошибка при создании пользователя']);
     }
+
     public function login(Request $request): string
     {
         //Если просто обращение к странице, то отобразить форму
