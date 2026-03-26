@@ -7,6 +7,7 @@ use Src\View;
 use Src\Request;
 use Model\User;
 use Src\Auth\Auth;
+use Model\Employee;
 
 class Site
 {
@@ -33,7 +34,6 @@ class Site
             return new View('site.signup');
         }
 
-        // POST — регистрация
         if (!Auth::check() || Auth::user()->role !== 'admin') {
             return new View('site.signup', ['error' => 'Только администратор может добавлять новых пользователей']);
         }
@@ -49,7 +49,7 @@ class Site
         return new View('site.signup', ['error' => 'Ошибка при создании пользователя']);
     }
 
-    public function login(Request $request): string
+    public function login(Request $request)
     {
         //Если просто обращение к странице, то отобразить форму
         if ($request->method === 'GET') {
@@ -68,44 +68,41 @@ class Site
         Auth::logout();
         app()->route->redirect('/hello');
     }
-
-    public function createEmployee(Request $request): string
+    public function employees(): string
     {
-        if (!Auth::check()) {
-            app()->route->redirect('/login');
+        $employees = \Model\Employee::all();
+
+        return new \Src\View('site.employees', ['employees' => $employees]);
+    }
+
+
+    public function deleteEmployee(Request $request): void
+    {
+
+        $employee = Employee::find($request->get('id'));
+
+        if ($employee) {
+            $employee->delete();
         }
+
+
+        app()->route->redirect('/employees');
+    }
+
+
+    public function editEmployee(Request $request): string
+    {
+
+        $employee = Employee::find($request->get('id'));
 
         if ($request->method === 'POST') {
-            $employee = new \Model\Employee();
-            $employee->last_name = $request->last_name;
-            $employee->first_name = $request->first_name;
-            $employee->middle_name = $request->middle_name ?? null;
-            $employee->gender = $request->gender;
-            $employee->birth_date = $request->birth_date;
-            $employee->registration_address = $request->registration_address ?? null;
-            $employee->phone = $request->phone ?? null;
-            $employee->email = $request->email ?? null;
-            $employee->save();
-
-            $order = new \Model\Order();
-            $order->order_number = $request->order_number;
-            $order->order_date = date("Y-m-d");
-            $order->order_type = 'приём';
-            $order->employee_id = $employee->employee_id;
-            $order->department_id = $request->department_id;
-            $order->position_id = $request->position_id;
-            $order->save();
-
-            return new View('employees.create', [
-                'success' => 'Сотрудник успешно добавлен!',
-                'departments' => \Model\Department::all(),
-                'positions' => \Model\Position::all()
-            ]);
+            if ($employee && $employee->update($request->all())) {
+                app()->route->redirect('/employees');
+            }
         }
 
-        return new View('employees.create', [
-            'departments' => \Model\Department::all(),
-            'positions' => \Model\Position::all()
-        ]);
+        return new \Src\View('site.edit_employee', ['employee' => $employee]);
     }
+
+
 }

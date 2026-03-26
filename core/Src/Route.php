@@ -12,20 +12,15 @@ use Src\Traits\SingletonTrait;
 
 class Route
 {
-    //Используем методы трейта
     use SingletonTrait;
 
-    //Свойство для хранения текущего маршрута
     private string $currentRoute = '';
     private $currentHttpMethod;
 
-    //Свойство для префикса для всех маршрутов
     private string $prefix = '';
 
-    //Классы для использования внешнего маршрутизатора
     private RouteCollector $routeCollector;
 
-    //Добавляет маршрут, устанавливает его текущим и возвращает объект
     public static function add($httpMethod, string $route, array $action): self
     {
         self::single()->routeCollector->addRoute($httpMethod, $route, $action);
@@ -34,14 +29,12 @@ class Route
         return self::single();
     }
 
-    //Добавляет префикс для обозначенных маршрутов
     public static function group(string $prefix, callable $callback): void
     {
         self::single()->routeCollector->addGroup($prefix, $callback);
         Middleware::single()->group($prefix, $callback);
     }
 
-    //Конструктор скрыт. Вызывается только один раз
     private function __construct()
     {
         $this->routeCollector = new RouteCollector(new Std(), new MarkBased());
@@ -60,10 +53,14 @@ class Route
 
     public function getUrl(string $url): string
     {
+        if (preg_match('/\.(css|js|png|jpg|jpeg|gif|svg)$/', $url)) {
+            $cleanPrefix = str_replace('/index.php', '', $this->prefix);
+            return $cleanPrefix . $url;
+        }
+
         return $this->prefix . $url;
     }
 
-    //Добавление middlewares для текущего маршрута
     public function middleware(...$middlewares): self
     {
         Middleware::single()->add($this->currentHttpMethod, $this->currentRoute, $middlewares);
@@ -72,11 +69,9 @@ class Route
 
     public function start(): void
     {
-        // Fetch method and URI from somewhere
         $httpMethod = $_SERVER['REQUEST_METHOD'];
         $uri = $_SERVER['REQUEST_URI'];
 
-        // Strip query string (?foo=bar) and decode URI
         if (false !== $pos = strpos($uri, '?')) {
             $uri = substr($uri, 0, $pos);
         }
@@ -88,6 +83,7 @@ class Route
         $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
         switch ($routeInfo[0]) {
             case Dispatcher::NOT_FOUND:
+//ы
                 throw new Error('NOT_FOUND');
             case Dispatcher::METHOD_NOT_ALLOWED:
                 throw new Error('METHOD_NOT_ALLOWED');
@@ -97,7 +93,7 @@ class Route
                 $vars[] = Middleware::single()->runMiddlewares($httpMethod, $uri);
                 $class = $handler[0];
                 $action = $handler[1];
-                call_user_func([new $class, $action], ...$vars);
+                echo call_user_func([new $class, $action], ...$vars);
                 break;
         }
     }

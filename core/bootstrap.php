@@ -1,11 +1,11 @@
 <?php
-//Путь до директории с конфигурационными файлами
+// Путь до директории с конфигурационными файлами
 const DIR_CONFIG = '/../config';
 
-//Подключение автозагрузчика composer
+// Подключение автозагрузчика composer
 require_once __DIR__ . '/../vendor/autoload.php';
 
-//Функция, возвращающая массив всех настроек приложения
+// Функция, возвращающая массив всех настроек приложения
 function getConfigs(string $path = DIR_CONFIG): array
 {
     $settings = [];
@@ -18,10 +18,25 @@ function getConfigs(string $path = DIR_CONFIG): array
     return $settings;
 }
 
+// Подключаем маршруты
 require_once __DIR__ . '/../route/web.php';
+
+// Инициализация приложения
 $app = new Src\Application(new Src\Settings(getConfigs()));
 
-//Функция возвращает глобальный экземпляр приложения
+$scriptName = $_SERVER['SCRIPT_NAME'];
+$requestUri = $_SERVER['REQUEST_URI'];
+
+
+if (strpos($requestUri, $scriptName) === 0) {
+    $prefix = $scriptName;
+} else {
+
+    $prefix = str_replace('/index.php', '', $scriptName);
+}
+
+$app->route->setPrefix($prefix);
+
 function app() {
     global $app;
     return $app;

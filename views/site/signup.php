@@ -22,14 +22,12 @@
 <form method="POST">
     <div>
         <label for="login">Логин *</label>
-        <input type="text" id="login" name="login" required autofocus>
+        <input type="text" id="login" name="login" required>
     </div>
-
     <div>
         <label for="password">Пароль *</label>
         <input type="password" id="password" name="password" required>
     </div>
-
     <button type="submit">Зарегистрировать</button>
 </form>
 

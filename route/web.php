@@ -7,4 +7,7 @@ Route::add('GET', '/hello', [Controller\Site::class, 'hello'])
 Route::add(['GET', 'POST'], '/signup', [Controller\Site::class, 'signup']);
 Route::add(['GET', 'POST'], '/login', [Controller\Site::class, 'login']);
 Route::add('GET', '/logout', [Controller\Site::class, 'logout']);
-Route::add(['GET', 'POST'], '/employees/add', [Controller\Site::class, 'createEmployee']);
+Route::add(['GET', 'POST'], '/employees/add', [Controller\EmployeeController::class, 'createEmployee']);
+Route::add('GET', '/employees', [Controller\Site::class, 'employees']);
+Src\Route::add('GET', '/employees/delete', [Controller\Site::class, 'deleteEmployee']);
+Src\Route::add(['GET', 'POST'], '/employees/edit', [Controller\Site::class, 'editEmployee']);
