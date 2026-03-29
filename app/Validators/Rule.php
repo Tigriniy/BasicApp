@@ -2,7 +2,7 @@
 
 namespace Validators;
 
-abstract class AbstractValidator
+abstract class Rule
 {
     protected $field;
     protected $value;
