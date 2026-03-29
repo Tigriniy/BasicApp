@@ -364,3 +364,96 @@ nav.filter-section option {
     font-weight: normal;
     color: #888;
 }
+
+.form-container {
+    max-width: 600px;
+    background: #f4f7f6;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.photo-section {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.photo-label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.employee-photo {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.photo-placeholder {
+    width: 150px;
+    height: 150px;
+    background: #e0e0e0;
+    margin: 0 auto 10px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    border: 1px dashed #999;
+}
+
+.photo-preview {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #28a745;
+    margin-bottom: 10px;
+    display: none;
+}
+
+.file-input-help {
+    font-size: 0.8em;
+    color: #777;
+    margin-top: 5px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.error-msg {
+    color: #dc3545;
+    display: block;
+    font-size: 0.8em;
+    margin-top: 2px;
+}
+
+.divider {
+    border: 0;
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+}

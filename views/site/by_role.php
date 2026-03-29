@@ -28,7 +28,6 @@
                     <span class="label">Должность</span>
                     <span class="value">
                         <?php
-                        // Берем первый приказ и через него название должности
                         $order = $employee->orders->first();
                         echo $order && $order->position
                                 ? htmlspecialchars($order->position->name)
