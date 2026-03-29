@@ -12,7 +12,6 @@ class User extends Model implements IdentityInterface
 
     public $timestamps = false;
     protected $fillable = [
-//        'name',
         'login',
         'password',
         'role'
@@ -21,13 +20,6 @@ class User extends Model implements IdentityInterface
 
     protected $primaryKey = 'users_id';
 
-    protected static function booted()
-    {
-        static::created(function ($user) {
-            $user->password = md5($user->password);
-            $user->save();
-        });
-    }
 
     public function findIdentity(int $id)
     {

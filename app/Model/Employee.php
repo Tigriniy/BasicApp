@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Employee extends Model
 {
     use HasFactory;
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'employee_id', 'employee_id');
+    }
 
     protected $table = 'employees';
 

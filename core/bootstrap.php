@@ -18,10 +18,8 @@ function getConfigs(string $path = DIR_CONFIG): array
     return $settings;
 }
 
-// Подключаем маршруты
 require_once __DIR__ . '/../route/web.php';
 
-// Инициализация приложения
 $app = new Src\Application(new Src\Settings(getConfigs()));
 
 $scriptName = $_SERVER['SCRIPT_NAME'];
@@ -37,6 +35,7 @@ if (strpos($requestUri, $scriptName) === 0) {
 
 $app->route->setPrefix($prefix);
 
+//Функция возвращает глобальный экземпляр приложения
 function app() {
     global $app;
     return $app;

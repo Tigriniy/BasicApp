@@ -8,6 +8,7 @@ use Src\Request;
 use Model\User;
 use Src\Auth\Auth;
 use Model\Employee;
+use Src\Validator\Validator;
 
 class Site
 {
@@ -35,21 +36,39 @@ class Site
         }
 
         if (!Auth::check() || Auth::user()->role !== 'admin') {
-            return new View('site.signup', ['error' => 'Только администратор может добавлять новых пользователей']);
+            return new View('site.signup', ['message' => 'Только администратор может добавлять пользователей']);
+        }
+
+        $validator = new Validator($request->all(), [
+            'name' => ['required'],
+            'login' => ['required', 'unique:users,login'],
+            'password' => ['required']
+        ], [
+            'required' => 'Поле :field пусто',
+            'unique' => 'Поле :field должно быть уникально'
+        ]);
+
+        if ($validator->fails()) {
+            return new View('site.signup', [
+                'message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)
+            ]);
         }
 
         $data = $request->all();
-        unset($data['name']);
         $data['role'] = 'hr_employee';
+        $data['password'] = md5($data['password']);
 
         if (User::create($data)) {
-            return new View('site.signup', ['success' => 'Новый сотрудник отдела кадров успешно добавлен']);
+            app()->route->redirect('/login');
+
         }
 
-        return new View('site.signup', ['error' => 'Ошибка при создании пользователя']);
+        return new View('site.signup', ['message' => 'Ошибка при создании']);
     }
 
-    public function login(Request $request)
+
+
+    public function login(Request $request): string
     {
         //Если просто обращение к странице, то отобразить форму
         if ($request->method === 'GET') {
@@ -103,6 +122,19 @@ class Site
 
         return new \Src\View('site.edit_employee', ['employee' => $employee]);
     }
+
+    public function home(): void
+    {
+        if (Auth::check()) {
+
+            app()->route->redirect('/hello');
+        } else {
+
+            app()->route->redirect('/login');
+        }
+    }
+
+
 
 
 }

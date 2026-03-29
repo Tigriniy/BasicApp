@@ -14,12 +14,12 @@
 
     <?php if (app()->auth::check()): ?>
         <nav>
-            <a href="<?= app()->route->getUrl('/hello') ?>">Главная</a> |
-            <a href="<?= app()->route->getUrl('/employees/add') ?>">Добавить сотрудника</a> |
-            <a href="<?= app()->route->getUrl('/employees') ?>">Список сотрудников</a> |
+            <a href="<?= app()->route->getUrl('/hello') ?>">Главная</a>
+            <a href="<?= app()->route->getUrl('/employees/add') ?>">Добавить сотрудника</a>
+            <a href="<?= app()->route->getUrl('/employees') ?>">Список сотрудников</a>
 
             <?php if (app()->auth::user()->role === 'admin'): ?>
-                <a href="<?= app()->route->getUrl('/signup') ?>">Добавить кадровика</a> |
+                <a href="<?= app()->route->getUrl('/signup') ?>">Добавить кадровика</a>
             <?php endif; ?>
 
             <a href="<?= app()->route->getUrl('/logout') ?>">Выйти (<?= htmlspecialchars(app()->auth::user()->login ?? '') ?>)</a>

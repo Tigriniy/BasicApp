@@ -2,33 +2,31 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Вход в систему</title>
-    <link rel="stylesheet" href="<?= app()->route->getUrl('/css/main.css') ?>">
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 
 <h1>Вход в систему отдела кадров</h1>
 
-<?php if (isset($message)): ?>
-    <p style="color: red; font-weight: bold;"><?= htmlspecialchars($message) ?></p>
-<?php endif; ?>
+<h3><?= $message ?? ''; ?></h3>
+<h3><?= app()->auth->user()->name ?? ''; ?></h3>
 
-<?php if (app()->auth::check()): ?>
-    <p>Вы уже вошли как <?= htmlspecialchars(app()->auth::user()->login) ?></p>
-<?php else: ?>
-    <form method="POST" action="<?= app()->route->getUrl('/login') ?>">
+<?php if (!app()->auth::check()): ?>
+    <form method="POST">
+        <!-- CSRF Токен из Листинга 4.17 -->
+        <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
+
         <div>
-            <label for="login">Логин</label>
-            <input type="text" id="login" name="login" required>
+            <label>Логин <input type="text" name="login" required></label>
         </div>
         <div>
-            <label for="password">Пароль</label>
-            <input type="password" id="password" name="password" required>
+            <label>Пароль <input type="password" name="password" required></label>
         </div>
         <button type="submit">Войти</button>
     </form>
+<?php else: ?>
+    <p>Вы уже вошли как <?= htmlspecialchars(app()->auth::user()->login) ?></p>
 <?php endif; ?>
 
 <p><a href="<?= app()->route->getUrl('/hello') ?>">На главную</a></p>

@@ -27,9 +27,10 @@ class Request
         $this->body[$field] = $value;
     }
 
-    public function get($field)
+    public function get(string $key)
     {
-        return $this->body[$field];
+        // Добавляем ?? null, чтобы если ключа нет, возвращалось пустое значение без ошибки
+        return $this->body[$key] ?? null;
     }
 
     public function files(): array

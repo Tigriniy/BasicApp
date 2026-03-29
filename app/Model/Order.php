@@ -22,4 +22,15 @@ class Order extends Model
         'position_id',
         'order_file'
     ];
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id', 'department_id');
+    }
+
+    public function position()
+    {
+
+        return $this->belongsTo(Position::class, 'position_id', 'positions_id');
+    }
 }
