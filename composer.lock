@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "98174eefee78981023957416eba6f831",
+    "content-hash": "3bfc598bf45267e898559e649351bef5",
     "packages": [
         {
             "name": "brick/math",
@@ -1884,6 +1884,50 @@
             "time": "2026-01-05T13:30:16+00:00"
         },
         {
+            "name": "tigriniy/collect",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Tigriniy/Collect.git",
+                "reference": "e6192656858b2b8bb956cffd0ebd877c78a8cfe7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Tigriniy/Collect/zipball/e6192656858b2b8bb956cffd0ebd877c78a8cfe7",
+                "reference": "e6192656858b2b8bb956cffd0ebd877c78a8cfe7",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 | ^8.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Collect\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ares",
+                    "email": "kurinoytimofey@gmail.com"
+                }
+            ],
+            "description": "Module for working with arrays ",
+            "support": {
+                "issues": "https://github.com/Tigriniy/Collect/issues",
+                "source": "https://github.com/Tigriniy/Collect/tree/main"
+            },
+            "time": "2026-03-29T16:03:05+00:00"
+        },
+        {
             "name": "voku/portable-ascii",
             "version": "2.0.3",
             "source": {
@@ -1964,7 +2008,8 @@
     "stability-flags": {
         "illuminate/database": 20,
         "illuminate/events": 20,
-        "nikic/fast-route": 20
+        "nikic/fast-route": 20,
+        "tigriniy/collect": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -1972,5 +2017,5 @@
         "php": "^8.1"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
