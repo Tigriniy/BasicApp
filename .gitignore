@@ -4,3 +4,5 @@ config/db.php
 access.log
 error.log
 composer.lock
+/public/uploads/*
+!/public/uploads/.gitkeep

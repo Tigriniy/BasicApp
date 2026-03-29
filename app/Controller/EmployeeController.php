@@ -23,13 +23,19 @@ class EmployeeController
         $positions = Position::all();
 
         if ($request->method === 'POST') {
+            $messages = [
+                'required' => 'Поле обязательно для заполнения',
+                'name' => 'Поле должно содержать только буквы',
+                'phone' => 'Введите корректный номер телефона',
+                'email' => 'Введите корректный email',
+            ];
 
             $validator = new Validator($request->all(), [
                 'last_name' => ['required', 'name'],
                 'first_name' => ['required', 'name'],
                 'phone' => ['required', 'phone'],
                 'email' => ['required', 'email'],
-            ]);
+            ], $messages);
 
             if ($validator->fails()) {
                 return new View('employees.create', [
@@ -40,16 +46,27 @@ class EmployeeController
                 ]);
             }
 
-            $employee = Employee::create([
-                'last_name' => $request->last_name,
-                'first_name' => $request->first_name,
-                'middle_name' => $request->middle_name,
-                'gender' => $request->gender,
-                'birth_date' => $request->birth_date,
-                'registration_address' => $request->registration_address,
-                'phone' => $request->phone,
-                'email' => $request->email,
-            ]);
+            $data = $request->all();
+
+            $data['image'] = null;
+
+            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                $file = $_FILES['image'];
+                $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+                $fileName = time() . '_' . uniqid() . '.' . $extension;
+
+                $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/atsayur-m4/public/uploads/';
+
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+
+                if (move_uploaded_file($file['tmp_name'], $uploadDir . $fileName)) {
+                    $data['image'] = '/atsayur-m4/public/uploads/' . $fileName;
+                }
+            }
+
+            $employee = Employee::create($data);
 
             Order::create([
                 'order_number' => $request->order_number,
@@ -60,7 +77,7 @@ class EmployeeController
                 'position_id' => $request->position_id,
             ]);
 
-            app()->route->redirect('/hello');
+            app()->route->redirect('/employees');
         }
 
         return new View('employees.create', [
@@ -74,7 +91,6 @@ class EmployeeController
         $search = $request->get('search');
 
         if ($search) {
-
             $employees = Employee::where('last_name', 'like', "%$search%")->get();
         } else {
             $employees = Employee::all();
@@ -87,6 +103,10 @@ class EmployeeController
     {
         $employee = Employee::find($request->get('id'));
         if ($employee) {
+
+            if ($employee->image && file_exists($_SERVER['DOCUMENT_ROOT'] . $employee->image)) {
+                unlink($_SERVER['DOCUMENT_ROOT'] . $employee->image);
+            }
             $employee->delete();
         }
         app()->route->redirect('/employees');
@@ -97,7 +117,27 @@ class EmployeeController
         $employee = Employee::find($request->get('id'));
 
         if ($request->method === 'POST') {
-            if ($employee && $employee->update($request->all())) {
+            $data = $request->all();
+            unset($data['image']);
+
+            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                $file = $_FILES['image'];
+                $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+                $fileName = time() . '_' . uniqid() . '.' . $extension;
+
+                $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/atsayur-m4/public/uploads/';
+                $uploadFile = $uploadDir . $fileName;
+
+                if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
+
+                    if ($employee->image && file_exists($_SERVER['DOCUMENT_ROOT'] . $employee->image)) {
+                        unlink($_SERVER['DOCUMENT_ROOT'] . $employee->image);
+                    }
+                    $data['image'] = '/atsayur-m4/public/uploads/' . $fileName;
+                }
+            }
+
+            if ($employee && $employee->update($data)) {
                 app()->route->redirect('/employees');
             }
         }

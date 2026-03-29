@@ -10,6 +10,6 @@ class NameValidator extends AbstractValidator
 
     public function rule(): bool
     {
-        return preg_match('/^[А-ЯЁа-яё\- ]+$/u', $this->value);
+        return preg_match('/^[a-zа-яё]+$/ui', $this->value);
     }
 }

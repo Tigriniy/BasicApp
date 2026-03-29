@@ -28,6 +28,7 @@ class Employee extends Model
         'birth_date',
         'registration_address',
         'phone',
-        'email'
+        'email',
+        'image'
     ];
 }
