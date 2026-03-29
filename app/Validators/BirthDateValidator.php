@@ -6,7 +6,7 @@ use Src\Validator\AbstractValidator;
 
 class BirthDateValidator extends AbstractValidator
 {
-    protected $message = 'Неверный формат даты рождения. Используйте YYYY-MM-DD';
+    protected string $message = 'Неверный формат даты рождения. Используйте YYYY-MM-DD';
 
     public function rule(): bool
     {

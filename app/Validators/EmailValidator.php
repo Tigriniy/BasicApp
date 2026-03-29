@@ -6,7 +6,7 @@ use Src\Validator\AbstractValidator;
 
 class EmailValidator extends AbstractValidator
 {
-    protected $message = 'Неверный формат email';
+    protected string $message = 'Неверный формат email';
 
     public function rule(): bool
     {

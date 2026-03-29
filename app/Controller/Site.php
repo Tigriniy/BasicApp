@@ -87,41 +87,6 @@ class Site
         Auth::logout();
         app()->route->redirect('/hello');
     }
-    public function employees(): string
-    {
-        $employees = \Model\Employee::all();
-
-        return new \Src\View('site.employees', ['employees' => $employees]);
-    }
-
-
-    public function deleteEmployee(Request $request): void
-    {
-
-        $employee = Employee::find($request->get('id'));
-
-        if ($employee) {
-            $employee->delete();
-        }
-
-
-        app()->route->redirect('/employees');
-    }
-
-
-    public function editEmployee(Request $request): string
-    {
-
-        $employee = Employee::find($request->get('id'));
-
-        if ($request->method === 'POST') {
-            if ($employee && $employee->update($request->all())) {
-                app()->route->redirect('/employees');
-            }
-        }
-
-        return new \Src\View('site.edit_employee', ['employee' => $employee]);
-    }
 
     public function home(): void
     {
