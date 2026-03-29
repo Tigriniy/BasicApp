@@ -3,7 +3,7 @@
 namespace Controller;
 
 use Src\Auth\Auth;
-use Src\Request;
+use Tigriniy\Framework\Http\Request;
 use Src\View;
 use Model\Employee;
 use Model\Order;

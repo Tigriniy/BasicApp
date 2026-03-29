@@ -4,7 +4,7 @@ namespace Controller;
 
 use Model\Post;
 use Src\View;
-use Src\Request;
+use Tigriniy\Framework\Http\Request;
 use Model\User;
 use Src\Auth\Auth;
 use Model\Employee;

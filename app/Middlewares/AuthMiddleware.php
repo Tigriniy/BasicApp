@@ -3,7 +3,7 @@
 namespace Middlewares;
 
 use Src\Auth\Auth;
-use Src\Request;
+use Tigriniy\Framework\Http\Request;
 
 class AuthMiddleware
 {

@@ -7,7 +7,7 @@ use Model\Department;
 use Model\StaffCategory;
 use Model\Order;
 use Src\View;
-use Src\Request;
+use Tigriniy\Framework\Http\Request;
 
 class EmployeeStats
 {

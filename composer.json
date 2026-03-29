@@ -9,7 +9,8 @@
         "illuminate/database": "12.x-dev",
         "illuminate/events": "12.x-dev",
         "nikic/fast-route": "^2.0@dev",
-        "tigriniy/collect": "dev-main"
+        "tigriniy/collect": "dev-main",
+        "tigriniy/framework": "dev-main"
     },
     "autoload": {
         "psr-4": {

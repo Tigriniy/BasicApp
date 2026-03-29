@@ -1,7 +1,7 @@
 <?php
 namespace Middlewares;
 
-use Src\Request;
+use Tigriniy\Framework\Http\Request;
 use function Collect\collection;
 
 class SpecialCharsMiddleware

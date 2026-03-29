@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3bfc598bf45267e898559e649351bef5",
+    "content-hash": "60964a4679a0e3b7a3ae483d1e6ed1ae",
     "packages": [
         {
             "name": "brick/math",
@@ -1928,6 +1928,46 @@
             "time": "2026-03-29T16:03:05+00:00"
         },
         {
+            "name": "tigriniy/framework",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Tigriniy/framework.git",
+                "reference": "f95b4a43f9220f1098c7c58ee9a1091bd7e88499"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Tigriniy/framework/zipball/f95b4a43f9220f1098c7c58ee9a1091bd7e88499",
+                "reference": "f95b4a43f9220f1098c7c58ee9a1091bd7e88499",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tigriniy\\Framework\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tigriniy"
+                }
+            ],
+            "description": "Custom PHP Framework Core",
+            "support": {
+                "issues": "https://github.com/Tigriniy/framework/issues",
+                "source": "https://github.com/Tigriniy/framework/tree/main"
+            },
+            "time": "2026-03-29T17:52:06+00:00"
+        },
+        {
             "name": "voku/portable-ascii",
             "version": "2.0.3",
             "source": {
@@ -2009,7 +2049,8 @@
         "illuminate/database": 20,
         "illuminate/events": 20,
         "nikic/fast-route": 20,
-        "tigriniy/collect": 20
+        "tigriniy/collect": 20,
+        "tigriniy/framework": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

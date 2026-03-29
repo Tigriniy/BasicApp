@@ -9,6 +9,7 @@ use FastRoute\RouteParser\Std;
 use FastRoute\DataGenerator\MarkBased;
 use FastRoute\Dispatcher\MarkBased as Dispatcher;
 use Src\Traits\SingletonTrait;
+use Tigriniy\Framework\Http\Request;
 
 class Route
 {

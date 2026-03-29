@@ -2,7 +2,7 @@
 
 namespace Middlewares;
 
-use Src\Request;
+use Tigriniy\Framework\Http\Request;
 
 class TrimMiddleware
 {

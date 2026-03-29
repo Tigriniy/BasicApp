@@ -3,7 +3,7 @@
 namespace Middlewares;
 
 use Exception;
-use Src\Request;
+use Tigriniy\Framework\Http\Request;
 use Src\Session;
 
 class CSRFMiddleware
