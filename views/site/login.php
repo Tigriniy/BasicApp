@@ -14,7 +14,6 @@
 
 <?php if (!app()->auth::check()): ?>
     <form method="POST">
-        <!-- CSRF Токен из Листинга 4.17 -->
         <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
 
         <div>

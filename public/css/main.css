@@ -457,3 +457,104 @@ nav.filter-section option {
     border-top: 1px solid #ddd;
     margin: 20px 0;
 }
+
+.search-section {
+    margin-bottom: 20px;
+}
+.search-form {
+    display: flex;
+    gap: 10px;
+}
+.search-input {
+    padding: 8px;
+    flex-grow: 1;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.btn-reset {
+    text-decoration: none;
+    line-height: 2;
+}
+
+.employees-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.employee-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    background: #fff;
+    text-align: center;
+}
+
+
+.employee-photo {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #007bff;
+}
+.photo-placeholder {
+    width: 100px;
+    height: 100px;
+    background: #f0f0f0;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+    border: 2px dashed #ccc;
+    margin: 0 auto;
+    font-size: 12px;
+}
+
+.employee-header {
+    font-size: 0.8em;
+    color: #666;
+    margin-bottom: 5px;
+}
+.employee-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.employee-middle-name {
+    font-weight: normal;
+    font-size: 0.9em;
+    color: #555;
+}
+.employee-contacts {
+    font-size: 0.9em;
+    text-align: left;
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.employee-actions {
+    display: flex;
+    justify-content: space-around;
+}
+.employee-actions .btn-edit,
+.employee-actions .btn-delete {
+    font-size: 0.85em;
+}
+
+.add-employee-block {
+    margin-top: 30px;
+}
+.btn-add-dashed {
+    text-decoration: none;
+    display: block;
+    padding: 20px;
+    border: 2px dashed #007bff;
+    text-align: center;
+    border-radius: 10px;
+    color: #007bff;
+    font-weight: bold;
+}

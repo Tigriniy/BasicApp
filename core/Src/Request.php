@@ -29,7 +29,6 @@ class Request
 
     public function get(string $key)
     {
-        // Добавляем ?? null, чтобы если ключа нет, возвращалось пустое значение без ошибки
         return $this->body[$key] ?? null;
     }
 

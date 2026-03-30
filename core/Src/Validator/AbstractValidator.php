@@ -28,7 +28,6 @@ abstract class AbstractValidator
         ];
     }
 
-    //Если правило валидации не прошло, то возвращаем сообщение об ошибке
     public function validate()
     {
         if (!$this->rule())
@@ -36,7 +35,6 @@ abstract class AbstractValidator
         return true;
     }
 
-    //Замена ключей на конкретные значения в сообщении об ошибке
     private function messageError(): string
     {
         foreach ($this->messageKeys as $key => $value) {
@@ -45,6 +43,5 @@ abstract class AbstractValidator
         return $message;
     }
 
-    //Основное правило валидации. Его должны переопределить классы-потомки
     abstract public function rule(): bool;
 }

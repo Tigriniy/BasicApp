@@ -25,7 +25,7 @@ class EmployeeController
         if ($request->method === 'POST') {
             $messages = [
                 'required' => 'Поле обязательно для заполнения',
-                'name' => 'Поле должно содержать только буквы',
+                'name' => 'Поле должно содержать только буквы, дефис и пробел',
                 'phone' => 'Введите корректный номер телефона',
                 'email' => 'Введите корректный email',
             ];
@@ -33,8 +33,12 @@ class EmployeeController
             $validator = new Validator($request->all(), [
                 'last_name' => ['required', 'name'],
                 'first_name' => ['required', 'name'],
+                'middle_name' => ['name'],
                 'phone' => ['required', 'phone'],
                 'email' => ['required', 'email'],
+                'order_number' => ['required'],
+                'department_id' => ['required'],
+                'position_id' => ['required'],
             ], $messages);
 
             if ($validator->fails()) {
@@ -47,22 +51,22 @@ class EmployeeController
             }
 
             $data = $request->all();
-
             $data['image'] = null;
 
+            // Обработка загрузки изображения
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
                 $file = $_FILES['image'];
                 $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
                 $fileName = time() . '_' . uniqid() . '.' . $extension;
 
-                $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/atsayur-m4/public/uploads/';
+                $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/public/uploads/';
 
                 if (!is_dir($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
 
                 if (move_uploaded_file($file['tmp_name'], $uploadDir . $fileName)) {
-                    $data['image'] = '/atsayur-m4/public/uploads/' . $fileName;
+                    $data['image'] = '/public/uploads/' . $fileName;
                 }
             }
 
@@ -91,7 +95,10 @@ class EmployeeController
         $search = $request->get('search');
 
         if ($search) {
-            $employees = Employee::where('last_name', 'like', "%$search%")->get();
+            $employees = Employee::where('last_name', 'like', "%$search%")
+                ->orWhere('first_name', 'like', "%$search%")
+                ->orWhere('phone', 'like', "%$search%")
+                ->get();
         } else {
             $employees = Employee::all();
         }
@@ -107,6 +114,9 @@ class EmployeeController
             if ($employee->image && file_exists($_SERVER['DOCUMENT_ROOT'] . $employee->image)) {
                 unlink($_SERVER['DOCUMENT_ROOT'] . $employee->image);
             }
+
+            $employee->orders()->delete();
+
             $employee->delete();
         }
         app()->route->redirect('/employees');
@@ -118,6 +128,7 @@ class EmployeeController
 
         if ($request->method === 'POST') {
             $data = $request->all();
+            unset($data['employee_id']);
             unset($data['image']);
 
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -125,7 +136,7 @@ class EmployeeController
                 $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
                 $fileName = time() . '_' . uniqid() . '.' . $extension;
 
-                $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/atsayur-m4/public/uploads/';
+                $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/public/uploads/';
                 $uploadFile = $uploadDir . $fileName;
 
                 if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
@@ -133,7 +144,7 @@ class EmployeeController
                     if ($employee->image && file_exists($_SERVER['DOCUMENT_ROOT'] . $employee->image)) {
                         unlink($_SERVER['DOCUMENT_ROOT'] . $employee->image);
                     }
-                    $data['image'] = '/atsayur-m4/public/uploads/' . $fileName;
+                    $data['image'] = '/public/uploads/' . $fileName;
                 }
             }
 

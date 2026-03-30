@@ -59,9 +59,19 @@ class Auth
     }
     public static function generateCSRF(): string
     {
-        $token = md5(time());
-        Session::set('csrf_token', $token);
+        if (!empty($_SESSION['csrf_token'])) {
+            return $_SESSION['csrf_token'];
+        }
+
+        $token = md5(time() . mt_rand());
+        $_SESSION['csrf_token'] = $token;
+
+        session_write_close();
+
+        session_start();
+
         return $token;
     }
+
 
 }

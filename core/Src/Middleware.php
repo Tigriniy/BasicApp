@@ -30,16 +30,13 @@ class Middleware
         $this->middlewareCollector = new RouteCollector(new Std(), new MarkBased());
     }
 
-    // ГЛАВНЫЙ МЕТОД (Запуск цепочки)
     public function go(string $httpMethod, string $uri, Request $request): Request
     {
         return $this->runMiddlewares($httpMethod, $uri, $this->runAppMiddlewares($request));
     }
 
-    // Запуск middlewares маршрута
     private function runMiddlewares(string $httpMethod, string $uri, Request $request): Request
     {
-        // В твоем конфиге данные лежат сразу в settings->app, без вложенного ['app']
         $routeMiddleware = app()->settings->app['routeMiddleware'] ?? [];
 
         foreach ($this->getMiddlewaresForRoute($httpMethod, $uri) as $middleware) {
@@ -54,10 +51,8 @@ class Middleware
         return $request;
     }
 
-    // Запуск глобальных middlewares
     private function runAppMiddlewares(Request $request): Request
     {
-        // В твоем конфиге данные лежат сразу в settings->app
         $routeAppMiddleware = app()->settings->app['routeAppMiddleware'] ?? [];
 
         foreach ($routeAppMiddleware as $name => $class) {
