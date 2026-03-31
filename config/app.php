@@ -22,5 +22,13 @@ return [
         'phone'      => \Validators\PhoneValidator::class,
         'email'      => \Validators\EmailValidator::class,
         'birthdate'  => \Validators\BirthDateValidator::class,
+    ],
+    //Классы провайдеров
+    'providers' => [
+        'kernel' => \Providers\KernelProvider::class,
+        'route' => \Providers\RouteProvider::class,
+        'db' => \Providers\DBProvider::class,
+        'auth' => \Providers\AuthProvider::class,
     ]
+
 ];
