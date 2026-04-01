@@ -18,13 +18,20 @@ class View
         $this->data = $data;
     }
 
-    //Полный путь до директории с представлени
+    //Полный путь до директории с представлениями
     private function getRoot(): string
     {
         global $app;
+        $root = $app->settings->getRootPath();
         $path = $app->settings->getViewsPath();
 
-        return realpath(__DIR__ . '/../../') . $path;
+        // Если root не пустой, то представления в папке public
+        if (!empty($root)) {
+            return $_SERVER['DOCUMENT_ROOT'] . $root . $path;
+        }
+
+        // Если root пустой, то представления в корне проекта
+        return dirname(__DIR__, 2) . $path;
     }
 
     //Путь до основного файла с шаблоном сайта
@@ -44,24 +51,30 @@ class View
     {
         $path = $this->getPathToView($view);
 
+
         if (file_exists($this->getPathToMain()) && file_exists($path)) {
-
             extract($data, EXTR_PREFIX_SAME, '');
-
             ob_start();
-
-            require $path;
-
+            require_once $path;
             $content = ob_get_clean();
-
-            return require($this->getPathToMain());
+            return require_once($this->getPathToMain());
         }
+
         throw new Exception('Error render');
     }
 
     public function __toString(): string
     {
         return $this->render($this->view, $this->data);
+    }
+
+    public function toJSON(array $data = [], int $code = 200): void
+    {
+        header_remove();
+        header("Content-Type: application/json; charset=utf-8");
+        http_response_code($code);
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+        exit();
     }
 
 }

@@ -6,7 +6,6 @@ use Src\Application;
 
 abstract class AbstractProvider
 {
-    //Поле для доступа к объекту приложения из классов-потомков
     protected Application $app;
 
     public function __construct(Application $app)

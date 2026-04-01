@@ -1,9 +1,6 @@
 <?php
 return [
-    //Адрес относительно домена
-    'root' => '',
-    //Настройка директории с маршрутами
-    'route' => 'route',
-    //Настройка директории с представлениями
-    'views' => 'views'
+    'root' => 'atsayur-m4/public',
+    'views' => '/views',
+    'routes' => '/routes',
 ];

@@ -17,6 +17,7 @@ class EmployeeController
     {
         if (!Auth::check()) {
             app()->route->redirect('/login');
+            return '';
         }
 
         $departments = Department::all();
@@ -42,23 +43,22 @@ class EmployeeController
             ], $messages);
 
             if ($validator->fails()) {
-                return new View('employees.create', [
+                $view = new View('employees.create', [
                     'errors' => $validator->errors(),
                     'departments' => $departments,
                     'positions' => $positions,
                     'old' => $request->all()
                 ]);
+                return (string) $view;
             }
 
             $data = $request->all();
             $data['image'] = null;
 
-            // Обработка загрузки изображения
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
                 $file = $_FILES['image'];
                 $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
                 $fileName = time() . '_' . uniqid() . '.' . $extension;
-
                 $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/public/uploads/';
 
                 if (!is_dir($uploadDir)) {
@@ -82,12 +82,14 @@ class EmployeeController
             ]);
 
             app()->route->redirect('/employees');
+            return '';
         }
 
-        return new View('employees.create', [
+        $view = new View('employees.create', [
             'departments' => $departments,
             'positions' => $positions
         ]);
+        return (string) $view;
     }
 
     public function index(Request $request): string
@@ -103,20 +105,18 @@ class EmployeeController
             $employees = Employee::all();
         }
 
-        return new View('site.employees', ['employees' => $employees]);
+        $view = new View('site.employees', ['employees' => $employees]);
+        return (string) $view;
     }
 
     public function delete(Request $request): void
     {
         $employee = Employee::find($request->get('id'));
         if ($employee) {
-
             if ($employee->image && file_exists($_SERVER['DOCUMENT_ROOT'] . $employee->image)) {
                 unlink($_SERVER['DOCUMENT_ROOT'] . $employee->image);
             }
-
             $employee->orders()->delete();
-
             $employee->delete();
         }
         app()->route->redirect('/employees');
@@ -140,7 +140,6 @@ class EmployeeController
                 $uploadFile = $uploadDir . $fileName;
 
                 if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
-
                     if ($employee->image && file_exists($_SERVER['DOCUMENT_ROOT'] . $employee->image)) {
                         unlink($_SERVER['DOCUMENT_ROOT'] . $employee->image);
                     }
@@ -150,9 +149,11 @@ class EmployeeController
 
             if ($employee && $employee->update($data)) {
                 app()->route->redirect('/employees');
+                return '';
             }
         }
 
-        return new View('site.edit_employee', ['employee' => $employee]);
+        $view = new View('site.edit_employee', ['employee' => $employee]);
+        return (string) $view;
     }
 }

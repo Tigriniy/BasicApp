@@ -9,6 +9,27 @@
         <img id="preview" class="photo-preview" src="#" alt="Превью">
     </div>
 
+    <div class="order-data-block">
+        <h3>Данные приказа о приёме</h3>
+        <div class="form-group">
+            <label for="order_number">Номер приказа *</label>
+            <input type="text" id="order_number" name="order_number" class="form-control"
+                   value="<?= htmlspecialchars($old['order_number'] ?? '') ?>" placeholder="Например: П-101" required>
+        </div>
+
+        <div class="form-group">
+            <label for="position_id">Должность *</label>
+            <select id="position_id" name="position_id" class="form-control" required>
+                <option value="">Выберите должность</option>
+                <?php foreach ($positions as $pos): ?>
+                    <option value="<?= $pos->positions_id ?>" <?= (isset($old['position_id']) && $old['position_id'] == $pos->positions_id) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($pos->name) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+
     <div class="form-group">
         <label for="last_name">Фамилия</label>
         <input type="text" id="last_name" name="last_name" class="form-control" value="<?= htmlspecialchars($old['last_name'] ?? '') ?>" required>
@@ -69,8 +90,8 @@
     </div>
 
     <div class="form-actions">
-        <button type="submit" class="btn-edit" style="flex: 2;">Добавить сотрудника</button>
-        <a href="<?= app()->route->getUrl('/employees') ?>" class="btn-delete" style="flex: 1; text-align: center;">Отмена</a>
+        <button type="submit" class="btn-edit">Добавить сотрудника</button>
+        <a href="<?= app()->route->getUrl('/employees') ?>" class="btn-delete">Отмена</a>
     </div>
 </form>
 

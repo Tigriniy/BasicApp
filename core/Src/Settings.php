@@ -8,11 +8,6 @@ class Settings
 {
     private array $_settings;
 
-    public function getDbSetting(): array
-    {
-        return $this->db ?? [];
-    }
-
     public function __construct(array $settings = [])
     {
         $this->_settings = $settings;
@@ -26,19 +21,26 @@ class Settings
         throw new Error('Accessing a non-existent property');
     }
 
+    public function getDbSetting(): array
+    {
+        return $this->db ?? [];
+    }
+
     public function getRootPath(): string
     {
-        return $this->path['root'] ? '/' . $this->path['root'] : '';
+
+        $root = $this->path['root'] ?? '';
+        return $root ? '/' . $root : '';
     }
 
     public function getViewsPath(): string
     {
-        return '/' . $this->path['views'] ?? '';
+        return $this->path['views'] ?? '/views';
     }
 
     public function getRoutePath(): string
     {
-        return '/' . $this->path['routes'] ?? '';
+        return $this->path['routes'] ?? '/routes';
     }
 
     public function getAuthClassName(): string
@@ -55,5 +57,4 @@ class Settings
     {
         unset($this->_settings['app']['routeAppMiddleware'][$key]);
     }
-
 }

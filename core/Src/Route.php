@@ -50,7 +50,10 @@ class Route
 
     public function setPrefix(string $value = ''): self
     {
-        $this->prefix = $value;
+        $this->prefix = trim($value, '/');
+        if (!empty($this->prefix)) {
+            $this->prefix = '/' . $this->prefix;
+        }
         return $this;
     }
 
@@ -61,11 +64,12 @@ class Route
 
     public function getUrl(string $url): string
     {
-        $url = trim($url, '/');
+        $scriptName = $_SERVER['SCRIPT_NAME'];
+        $basePath = dirname($scriptName);
 
-        $basePath = str_replace('/index.php', '', $_SERVER['SCRIPT_NAME']);
+        $url = '/' . ltrim($url, '/');
 
-        return $basePath . '/' . $url;
+        return $basePath . $url;
     }
 
     //Добавление middlewares для текущего маршрута
@@ -77,7 +81,6 @@ class Route
 
     public function start(): void
     {
-        // Fetch method and URI from somewhere
         $httpMethod = $_SERVER['REQUEST_METHOD'];
         $uri = $_SERVER['REQUEST_URI'];
 
@@ -86,12 +89,18 @@ class Route
         }
         $uri = rawurldecode($uri);
 
-        if (!empty($this->prefix) && strpos($uri, $this->prefix) === 0) {
-            $uri = substr($uri, strlen($this->prefix));
-        }
+        if (!empty($this->prefix)) {
 
-        if (empty($uri)) {
-            $uri = '/';
+            $uriNormalized = '/' . ltrim($uri, '/');
+
+            $prefixNormalized = '/' . ltrim($this->prefix, '/');
+
+            if (strpos($uriNormalized, $prefixNormalized) === 0) {
+                $uri = substr($uriNormalized, strlen($prefixNormalized));
+                if (empty($uri)) {
+                    $uri = '/';
+                }
+            }
         }
 
         $dispatcher = new Dispatcher($this->routeCollector->getData());
@@ -106,7 +115,6 @@ class Route
                 $handler = $routeInfo[1];
                 $vars = array_values($routeInfo[2]);
 
-                //Вызываем обработку всех Middleware
                 $vars[] = Middleware::single()->go($httpMethod, $uri, new Request());
 
                 $class = $handler[0];

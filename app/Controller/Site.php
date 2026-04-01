@@ -22,21 +22,21 @@ class Site
     {
         if (!Auth::check()) {
             app()->route->redirect('/login');
+            return '';
         }
 
         $user = Auth::user();
-
-        return new View('site.hello', ['message' => 'Добро пожаловать в систему отдела кадров!', 'user' => $user]);
+        return (new View())->render('site.hello', ['message' => 'Добро пожаловать в систему отдела кадров!', 'user' => $user]);
     }
 
     public function signup(Request $request): string
     {
         if ($request->method === 'GET') {
-            return new View('site.signup');
+            return (new View())->render('site.signup');
         }
 
         if (!Auth::check() || Auth::user()->role !== 'admin') {
-            return new View('site.signup', ['message' => 'Только администратор может добавлять пользователей']);
+            return (new View())->render('site.signup', ['message' => 'Только администратор может добавлять пользователей']);
         }
 
         $validator = new Validator($request->all(), [
@@ -49,7 +49,7 @@ class Site
         ]);
 
         if ($validator->fails()) {
-            return new View('site.signup', [
+            return (new View())->render('site.signup', [
                 'message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)
             ]);
         }
@@ -60,26 +60,24 @@ class Site
 
         if (User::create($data)) {
             app()->route->redirect('/login');
-
+            return '';
         }
 
-        return new View('site.signup', ['message' => 'Ошибка при создании']);
+        return (new View())->render('site.signup', ['message' => 'Ошибка при создании']);
     }
-
-
 
     public function login(Request $request): string
     {
-
         if ($request->method === 'GET') {
-            return new View('site.login');
+            return (new View())->render('site.login');
         }
 
         if (Auth::attempt($request->all())) {
             app()->route->redirect('/hello');
+            return '';
         }
 
-        return new View('site.login', ['message' => 'Неправильные логин или пароль']);
+        return (new View())->render('site.login', ['message' => 'Неправильные логин или пароль']);
     }
 
     public function logout(): void
@@ -91,15 +89,9 @@ class Site
     public function home(): void
     {
         if (Auth::check()) {
-
             app()->route->redirect('/hello');
         } else {
-
             app()->route->redirect('/login');
         }
     }
-
-
-
-
 }

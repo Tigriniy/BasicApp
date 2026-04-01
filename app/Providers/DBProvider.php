@@ -24,6 +24,6 @@ class DBProvider extends AbstractProvider
         $this->dbManager->bootEloquent();
 
         $this->app->bind('db', $this->dbManager);
-    }
 
+    }
 }
