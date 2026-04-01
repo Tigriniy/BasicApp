@@ -13,20 +13,15 @@ use Tigriniy\Framework\Http\Request;
 
 class Route
 {
-    //Используем методы трейта
     use SingletonTrait;
 
-    //Свойство для хранения текущего маршрута
     private string $currentRoute = '';
     private $currentHttpMethod;
 
-    //Свойство для префикса для всех маршрутов
     private string $prefix = '';
 
-    //Классы для использования внешнего маршрутизатора
     private RouteCollector $routeCollector;
 
-    //Добавляет маршрут, устанавливает его текущим и возвращает объект
     public static function add($httpMethod, string $route, array $action): self
     {
         self::single()->routeCollector->addRoute($httpMethod, $route, $action);
@@ -35,14 +30,12 @@ class Route
         return self::single();
     }
 
-    //Добавляет префикс для обозначенных маршрутов
     public static function group(string $prefix, callable $callback): void
     {
         self::single()->routeCollector->addGroup($prefix, $callback);
         Middleware::single()->group($prefix, $callback);
     }
 
-    //Конструктор скрыт. Вызывается только один раз
     private function __construct()
     {
         $this->routeCollector = new RouteCollector(new Std(), new MarkBased());
@@ -72,7 +65,6 @@ class Route
         return $basePath . $url;
     }
 
-    //Добавление middlewares для текущего маршрута
     public function middleware(...$middlewares): self
     {
         Middleware::single()->add($this->currentHttpMethod, $this->currentRoute, $middlewares);
@@ -89,17 +81,14 @@ class Route
         }
         $uri = rawurldecode($uri);
 
-        if (!empty($this->prefix)) {
+        if (!empty($this->prefix) && strpos($uri, $this->prefix) === 0) {
+            $uri = substr($uri, strlen($this->prefix));
+        }
 
-            $uriNormalized = '/' . ltrim($uri, '/');
-
-            $prefixNormalized = '/' . ltrim($this->prefix, '/');
-
-            if (strpos($uriNormalized, $prefixNormalized) === 0) {
-                $uri = substr($uriNormalized, strlen($prefixNormalized));
-                if (empty($uri)) {
-                    $uri = '/';
-                }
+        if (strpos($uri, '/api') === 0) {
+            $uri = substr($uri, 4);
+            if (empty($uri)) {
+                $uri = '/';
             }
         }
 

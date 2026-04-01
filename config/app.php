@@ -9,6 +9,7 @@ return [
         'auth' => \Middlewares\AuthMiddleware::class,
         'role' => \Middlewares\RoleMiddleware::class,
         'guest' => \Middlewares\GuestMiddleware::class,
+        'auth_api' => \Middlewares\AuthApiMiddleware::class,
     ],
     'routeAppMiddleware' => [
         'csrf' => \Middlewares\CSRFMiddleware::class,

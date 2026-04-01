@@ -6,6 +6,8 @@ use Error;
 
 class Request
 {
+    public $user;
+
     protected array $body;
     public string $method;
     public array $headers;
